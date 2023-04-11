@@ -19,34 +19,43 @@
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
-        ListNode* keyPtr;
-        ListNode* ptr;
-        ListNode* lastPtr;
-        lastPtr = head;
-        if(lastPtr->next == nullptr){
-            return lastPtr;
+        if (head == nullptr || head->next == nullptr) {
+            return head;
         }
-        ptr = lastPtr->next;
-        while(ptr->val < x){
+
+        ListNode dummyHead(-1);
+        dummyHead.next = head;
+        ListNode* keyPtr = &dummyHead;
+        ListNode* lastPtr = &dummyHead;
+        ListNode* ptr = head;
+
+        // 寻找第一个大于或等于x的节点，作为插入点
+        while (ptr != nullptr && ptr->val < x) {
             keyPtr = ptr;
-            lastPtr = ptr; 
+            lastPtr = ptr;
             ptr = ptr->next;
         }
-        for(; ptr->next != nullptr; lastPtr = ptr, ptr = ptr->next){
-            if(ptr->val < x){
-                ListNode* tempPtr;
+
+        // 遍历链表，将小于x的节点移动到插入点
+        while (ptr != nullptr) {
+            if (ptr->val < x) {
+                // 删除ptr指向的节点
                 lastPtr->next = ptr->next;
 
-                tempPtr = keyPtr->next;
+                // 将ptr指向的节点插入到keyPtr之后
+                ptr->next = keyPtr->next;
                 keyPtr->next = ptr;
-                ptr->next = tempPtr;
-                
-                keyPtr = keyPtr->next;
-                ptr = lastPtr;
-            }
 
+                // 更新keyPtr和ptr
+                keyPtr = keyPtr->next;
+                ptr = lastPtr->next;
+            } else {
+                lastPtr = ptr;
+                ptr = ptr->next;
+            }
         }
-    return head;
+
+        return dummyHead.next;
     }
 };
 // @lc code=end
