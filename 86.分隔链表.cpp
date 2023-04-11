@@ -8,13 +8,13 @@
 // @lc code=start
 /* *
  * Definition for singly-linked list. */
-struct ListNode {
+/* struct ListNode {
     int val;
     ListNode *next;
     ListNode() : val(0), next(nullptr) {}
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
-};
+}; */
 
 class Solution {
 public:
@@ -35,15 +35,18 @@ public:
         for(; ptr->next != nullptr; lastPtr = ptr, ptr = ptr->next){
             if(ptr->val < x){
                 ListNode* tempPtr;
-                tempPtr = ptr;
-
-
                 lastPtr->next = ptr->next;
-                tempPtr->next = 
-                keyPtr = keyPtr->next;
-            }
-        }
 
+                tempPtr = keyPtr->next;
+                keyPtr->next = ptr;
+                ptr->next = tempPtr;
+                
+                keyPtr = keyPtr->next;
+                ptr = lastPtr;
+            }
+
+        }
+    return head;
     }
 };
 // @lc code=end
