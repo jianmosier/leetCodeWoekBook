@@ -1,20 +1,10 @@
-/*
- * @lc app=leetcode.cn id=86 lang=cpp
- * @lcpr version=21902
- *
- * [86] 分隔链表
- */
+#include <iostream>
 
-// @lc code=start
-/* *
- * Definition for singly-linked list. */
-/* struct ListNode {
+struct ListNode {
     int val;
     ListNode *next;
-    ListNode() : val(0), next(nullptr) {}
     ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-}; */
+};
 
 class Solution {
 public:
@@ -28,8 +18,7 @@ public:
         ListNode* lastPtr = &dummyHead;
         ListNode* ptr = dummyHead.next;
 
-        while(ptr->val < x){
-            if(ptr->next == nullptr) return dummyHead.next;
+        while(ptr != nullptr && ptr->val < x){
             lastPtr = ptr;
             keyPtr = ptr;
             ptr = ptr->next;
@@ -44,24 +33,40 @@ public:
                 keyPtr = ptr;
                 ptr = lastPtr;
             }
-
         }
         return dummyHead.next;
     }
 };
-// @lc code=end
 
+// 创建链表
+ListNode* createLinkedList(const std::initializer_list<int>& init_list) {
+    ListNode dummyHead(-1);
+    ListNode* tail = &dummyHead;
 
+    for (int value : init_list) {
+        tail->next = new ListNode(value);
+        tail = tail->next;
+    }
 
-/*
-// @lcpr case=start
-// [1,4,3,2,5,2]\n3\n
-// @lcpr case=end
+    return dummyHead.next;
+}
 
-// @lcpr case=start
-// [2,1]\n2\n
-// @lcpr case=end
+// 打印链表
+void printLinkedList(ListNode* head) {
+    while (head != nullptr) {
+        std::cout << head->val << " ";
+        head = head->next;
+    }
+    std::cout << std::endl;
+}
 
- */
+int main() {
+    ListNode* head = createLinkedList({1, 4, 3, 0, 2, 5, 2});
 
+    Solution solution;
+    ListNode* partitionedHead = solution.partition(head, 3);
 
+    printLinkedList(partitionedHead);
+
+    return 0;
+}
