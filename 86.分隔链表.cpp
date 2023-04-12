@@ -19,34 +19,29 @@
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
-        if(head == nullptr || head->next == nullptr){
-            return head;
-        }
-        ListNode dummyHead(-1);
-        dummyHead.next = head;
-        ListNode* keyPtr = &dummyHead;
-        ListNode* lastPtr = &dummyHead;
-        ListNode* ptr = dummyHead.next;
-
-        while(ptr->val < x){
-            if(ptr->next == nullptr) return dummyHead.next;
-            lastPtr = ptr;
-            keyPtr = ptr;
-            ptr = ptr->next;
-        }
-
-        for(; ptr != nullptr; lastPtr = ptr, ptr = ptr->next){
-            if(ptr->val < x ){
-                lastPtr->next = ptr->next;
-                ptr->next = keyPtr->next;
-                keyPtr->next = ptr;
-
-                keyPtr = ptr;
-                ptr = lastPtr;
+        //定义大小哑节点，大小滑动指针
+        ListNode smallHead(-1);
+        ListNode* smallPtr;
+        ListNode bigHead(-1);
+        ListNode* bigPtr;
+        smallPtr = &smallHead;
+        bigPtr = &bigHead;
+        //定义遍历前当滑动指针
+        ListNode* ptr = head;
+        //walk through the Head
+        for(;ptr!=nullptr; ptr = ptr->next){
+            if(ptr->val<x){
+                smallPtr->next = ptr;
+                smallPtr = smallPtr->next;
             }
-
+            else{
+                bigPtr->next = ptr;
+                bigPtr = bigPtr->next;
+            }
         }
-        return dummyHead.next;
+        bigPtr->next = nullptr;
+        smallPtr->next = bigHead.next;
+        return smallHead.next;
     }
 };
 // @lc code=end
