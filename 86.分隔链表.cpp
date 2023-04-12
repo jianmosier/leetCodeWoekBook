@@ -19,29 +19,24 @@
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
-        //定义大小哑节点，大小滑动指针
-        ListNode smallHead(-1);
-        ListNode* smallPtr;
-        ListNode bigHead(-1);
-        ListNode* bigPtr;
-        smallPtr = &smallHead;
-        bigPtr = &bigHead;
-        //定义遍历前当滑动指针
-        ListNode* ptr = head;
-        //walk through the Head
-        for(;ptr!=nullptr; ptr = ptr->next){
-            if(ptr->val<x){
-                smallPtr->next = ptr;
-                smallPtr = smallPtr->next;
-            }
-            else{
-                bigPtr->next = ptr;
-                bigPtr = bigPtr->next;
-            }
+    ListNode less_head(0), more_head(0);  // 创建两个临时链表的虚拟头节点
+    ListNode *less_ptr = &less_head, *more_ptr = &more_head;
+
+    while (head != nullptr) {
+        if (head->val < x) {
+            less_ptr->next = head;
+            less_ptr = head;
+        } else {
+            more_ptr->next = head;
+            more_ptr = head;
         }
-        bigPtr->next = nullptr;
-        smallPtr->next = bigHead.next;
-        return smallHead.next;
+        head = head->next;
+    }
+
+    less_ptr->next = more_head.next;  // 将两个临时链表连接起来
+    more_ptr->next = nullptr;         // 设置尾节点的next指针为nullptr
+
+    return less_head.next;            // 返回结果链表的头节点
     }
 };
 // @lc code=end
