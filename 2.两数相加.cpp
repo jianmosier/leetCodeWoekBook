@@ -20,28 +20,29 @@
 
 class Solution {
 public:
-    long long listToNum(ListNode* list){
-        long long sum=0;
-        for(int i=0; list!=nullptr; i++,list = list->next){
-            sum = sum + list->val*std::pow(10,i);
-        }
-        return sum;
+    long long listToSum(ListNode* list){
+        long long sum1 = 0;
+        for (int i = 0; list != nullptr; i++, list = list->next) {
+            sum1 = sum1 + list->val * std::pow(10,i);
+        } 
+        return sum1;
     }
+    
 
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        //caution large number
-        long long sum = listToNum(l1) + listToNum(l2);
+        long long sum = listToSum(l1) + listToSum(l2);
         ListNode dummyNode(-1);
         ListNode* ptr = &dummyNode;
-        // caution new node add method
-        if(sum/10 == 0){
+        
+        if (sum / 10 == 0) {
             ptr->next = new ListNode(sum);
             return dummyNode.next;
         }
-        for(int j=0; sum/10 > 0; ptr = ptr->next, sum = sum/10){
-            ptr->next = new ListNode(sum%10);
+        for (int j = 0; sum / 10 > 0; sum = sum / 10) {
+            ptr->next = new ListNode(sum % 10);
+            ptr = ptr->next;
         }
-        ptr = new ListNode(sum);
+        ptr->next = new ListNode(sum);
         return dummyNode.next;
     }
     
