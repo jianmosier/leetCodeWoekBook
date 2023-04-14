@@ -23,7 +23,7 @@ public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
         ListNode newHead(-1);
         ListNode *ptr3;
-        newHead.next = ptr3;
+        ptr3 = newHead.next;   //can't connect ptr3 and newHead after ptr3 redirect
 
         while(list1!=nullptr&&list2!=nullptr){
             if(list1->val <= list2->val){
