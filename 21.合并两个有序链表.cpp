@@ -22,25 +22,24 @@ class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
         ListNode newHead(-1);
-        ListNode *ptr3;
-        ptr3 = newHead.next;   //can't connect ptr3 and newHead after ptr3 redirect
+        ListNode *ptr3 = &newHead;
 
         while(list1!=nullptr&&list2!=nullptr){
             if(list1->val <= list2->val){
-                ptr3 = list1;
+                ptr3->next = list1;
                 list1 = list1->next;
             }
             else{
-                ptr3 = list2;
+                ptr3->next = list2;
                 list2 = list2->next;
             }
             ptr3 = ptr3->next;
         }
         if(list2!=nullptr){
-            ptr3 = list2;
+            ptr3->next = list2;
         }
         else if(list1!=nullptr){
-            ptr3 = list1;
+            ptr3->next = list1;
         }
         return newHead.next;
     }
