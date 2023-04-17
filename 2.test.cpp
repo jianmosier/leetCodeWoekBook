@@ -11,21 +11,29 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+long long listToSum(ListNode* list){
+    long long sum1 = 0;
+    for (int i = 0; list != nullptr; i++, list = list->next) {
+        sum1 = sum1 + list->val * std::pow(10,i);
+    } 
+    return sum1;
+}
+
 ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-    ListNode dummy(0);
-    ListNode *p = &dummy;
-    int carry = 0;
+    long long sum = listToSum(l1) + listToSum(l2);
+    ListNode dummyNode(-1);
+    ListNode* ptr = &dummyNode;
     
-    while (l1 || l2 || carry) {
-        int sum = (l1 ? l1->val : 0) + (l2 ? l2->val : 0) + carry;
-        carry = sum / 10;
-        p->next = new ListNode(sum % 10);
-        p = p->next;
-        l1 = l1 ? l1->next : l1;
-        l2 = l2 ? l2->next : l2;
+    if (sum / 10 == 0) {
+        ptr->next = new ListNode(sum);
+        return dummyNode.next;
     }
-    
-    return dummy.next;
+    for (int j = 0; sum / 10 > 0; sum = sum / 10) {
+        ptr->next = new ListNode(sum % 10);
+        ptr = ptr->next;
+    }
+    ptr->next = new ListNode(sum);
+    return dummyNode.next;
 }
 
 ListNode* createList(const vector<int>& nums) {
