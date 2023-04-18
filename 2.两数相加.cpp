@@ -20,29 +20,39 @@
 
 class Solution {
 public:
-    long long listToSum(ListNode* list){
-        long long sum1 = 0;
-        for (int i = 0; list != nullptr; i++, list = list->next) {
-            sum1 = sum1 + list->val * std::pow(10,i);
-        } 
-        return sum1;
-    }
-    
-
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        long long sum = listToSum(l1) + listToSum(l2);
+        bool addone = false;
         ListNode dummyNode(-1);
         ListNode* ptr = &dummyNode;
-        
-        if (sum / 10 == 0) {
-            ptr->next = new ListNode(sum);
-            return dummyNode.next;
+        for(;l1 != nullptr && l2 != nullptr; ptr = ptr->next, l1 = l1->next, l2 = l2->next){
+            ptr->next = new ListNode((l1->val+l2->val)%10 + ((addone) ? 1 : 0));
+            if(l1->val + l2->val >= 10){
+                addone = true;
+            }
+            else{
+                addone = false;
+            }
         }
-        for (int j = 0; sum / 10 > 0; sum = sum / 10) {
-            ptr->next = new ListNode(sum % 10);
+        if(l1 != nullptr || l2 != nullptr){
+            ListNode* addPtr = (l1 != nullptr ? l1 : l2);
+            ptr->next = addPtr;
             ptr = ptr->next;
+            while(addone&&(ptr!=nullptr)){
+                if(ptr->val + 1 >= 10){
+                    addone = true;
+                }
+                else{
+                    addone = false;
+                }
+                ptr->val = (ptr->val + 1)%10;
+                ptr = ptr->next;
+            }
         }
-        ptr->next = new ListNode(sum);
+        else{
+            if(addone){
+                ptr->next = new ListNode(1);
+            }
+        }  
         return dummyNode.next;
     }
     
