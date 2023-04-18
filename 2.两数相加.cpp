@@ -25,27 +25,19 @@ public:
         ListNode dummyNode(-1);
         ListNode* ptr = &dummyNode;
         for(;l1 != nullptr && l2 != nullptr; ptr = ptr->next, l1 = l1->next, l2 = l2->next){
-            ptr->next = new ListNode((l1->val+l2->val)%10 + ((addone) ? 1 : 0));
-            if(l1->val + l2->val >= 10){
-                addone = true;
-            }
-            else{
-                addone = false;
-            }
+            ptr->next = new ListNode((l1->val+l2->val + ((addone) ? 1 : 0))%10);
+            addone = (l1->val + l2->val + addone >= 10) ? true :false;
         }
         if(l1 != nullptr || l2 != nullptr){
             ListNode* addPtr = (l1 != nullptr ? l1 : l2);
             ptr->next = addPtr;
-            ptr = ptr->next;
-            while(addone&&(ptr!=nullptr)){
-                if(ptr->val + 1 >= 10){
-                    addone = true;
+            for(; addone == true; ptr = ptr->next ){
+                if(ptr->next == nullptr){
+                    ptr ->next = new ListNode(1);
+                    return dummyNode.next;
                 }
-                else{
-                    addone = false;
-                }
-                ptr->val = (ptr->val + 1)%10;
-                ptr = ptr->next;
+                addone = (ptr->next->val + 1 >= 10) ? true :false;
+                ptr->next->val = (ptr->next->val + 1)%10;
             }
         }
         else{
